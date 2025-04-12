@@ -1,0 +1,70 @@
+import React from 'react';
+import { X, ShoppingCart } from 'lucide-react';
+import { Player } from '../types';
+import { calculatePlayerPrice } from '../data/players';
+
+interface TransferMarketProps {
+  availablePlayers: Player[];
+  coins: number;
+  setCoins: (coins: number) => void;
+  onPlayerBuy: (player: Player) => void;
+  onClose: () => void;
+}
+
+export function TransferMarket({
+  availablePlayers,
+  coins,
+  setCoins,
+  onPlayerBuy,
+  onClose
+}: TransferMarketProps) {
+  const buyPlayer = (player: Player) => {
+    const price = calculatePlayerPrice(player.rating);
+    if (coins >= price) {
+      setCoins(coins - price);
+      onPlayerBuy(player);
+    } else {
+      alert('Not enough coins to buy this player!');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-auto">
+      <div className="bg-gray-800 p-8 rounded-lg relative max-w-4xl w-full m-4">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white"
+        >
+          <X size={24} />
+        </button>
+        
+        <h2 className="text-2xl font-bold mb-6">Transfer Market</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {availablePlayers.map((player, index) => (
+            <div key={index} className="bg-gray-700 p-4 rounded-lg">
+              <img
+                src={player.image}
+                alt={player.name}
+                className="w-full h-48 object-cover rounded-lg mb-4"
+              />
+              <div className="space-y-2">
+                <h3 className="font-semibold">{player.name}</h3>
+                <p>Rating: {player.rating}</p>
+                <p>Position: {player.position}</p>
+                <p className="text-yellow-400">Price: {calculatePlayerPrice(player.rating)} coins</p>
+                <button
+                  onClick={() => buyPlayer(player)}
+                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg w-full justify-center"
+                >
+                  <ShoppingCart size={16} />
+                  Buy Now
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
