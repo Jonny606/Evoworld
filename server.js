@@ -202,6 +202,16 @@ app.post('/player/:id/ban', authenticateAdmin, (req, res) => {
   });
 });
 
+const path = require('path');
+
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, 'dist')));
+
+// For any other route, serve index.html so React Router works
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Evoworld server running on http://localhost:${PORT}`);
