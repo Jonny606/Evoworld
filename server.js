@@ -1,9 +1,14 @@
-const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+import express from 'express';
+import sqlite3 from 'sqlite3';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
@@ -13,7 +18,8 @@ app.use(bodyParser.json());
 const JWT_SECRET = 'your_super_secret_key';
 
 // Initialize SQLite DB
-const db = new sqlite3.Database('./evoworld.db', (err) => {
+const sqlite = sqlite3.verbose();
+const db = new sqlite.Database('./evoworld.db', (err) => {
   if (err) console.error('DB error:', err.message);
   else console.log('Connected to SQLite database.');
 });
@@ -40,6 +46,10 @@ db.serialize(() => {
 
   // Insert default admin if none exists
   db.get(`SELECT * FROM admins WHERE username = 'admin'`, (err, row) => {
+    if (err) {
+      console.error('Error checking admin:', err.message);
+      return;
+    }
     if (!row) {
       const hash = bcrypt.hashSync('admin123', 10);
       db.run(`INSERT INTO admins (username, password_hash) VALUES (?, ?)`, ['admin', hash]);
@@ -202,8 +212,6 @@ app.post('/player/:id/ban', authenticateAdmin, (req, res) => {
   });
 });
 
-const path = require('path');
-
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -212,7 +220,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Evoworld server running on http://localhost:${PORT}`);
+  console.log(`Evoworld server running on port ${PORT}`);
 });
