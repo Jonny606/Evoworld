@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Pack Opening Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="root">
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <span class="package-icon">📦</span>
+                        <h1>Ultimate Pack Opening</h1>
+                    </div>
+                    <div class="currency">
+                        <div class="coins">
+                            <span class="coin-icon">🪙</span>
+                            <span id="coinCount">1000</span> coins
+                        </div>
+                        <div class="credits">
+                            <span class="trophy-icon">🏆</span>
+                            <span id="creditCount">500</span> credits
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="container">
+                <div class="action-buttons">
+                    <button onclick="showTournament()" class="btn tournament">
+                        🏆 Play Tournament
+                    </button>
+                    <button onclick="showClub()" class="btn club">
+                        👥 My Club
+                    </button>
+                    <button onclick="showTransferMarket()" class="btn market">
+                        💰 Transfer Market
+                    </button>
+                    <button onclick="showBotMatch()" class="btn bot-match">
+                        ⚔️ Play vs Bot
+                    </button>
+                </div>
+
+                <section class="packs-section">
+                    <h2>Available Packs</h2>
+                    <div class="packs-grid">
+                        <button class="pack bronze" onclick="openPack('bronze')">
+                            <div class="pack-content">
+                                <h3>Bronze Pack</h3>
+                                <p>100 coins</p>
+                            </div>
+                        </button>
+                        <button class="pack silver" onclick="openPack('silver')">
+                            <div class="pack-content">
+                                <h3>Silver Pack</h3>
+                                <p>250 coins</p>
+                            </div>
+                        </button>
+                        <button class="pack gold" onclick="openPack('gold')">
+                            <div class="pack-content">
+                                <h3>Gold Pack</h3>
+                                <p>500 coins</p>
+                            </div>
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Modals -->
+        <div id="playerModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal('playerModal')">&times;</span>
+                <div id="playerInfo"></div>
+            </div>
+        </div>
+
+        <div id="tournamentModal" class="modal">
+            <div class="modal-content tournament-content">
+                <span class="close-btn" onclick="closeModal('tournamentModal')">&times;</span>
+                <div class="tournament-container">
+                    <h2>Tournament Mode</h2>
+                    <div id="tournamentInfo"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="clubModal" class="modal">
+            <div class="modal-content club-content">
+                <span class="close-btn" onclick="closeModal('clubModal')">&times;</span>
+                <div class="club-container">
+                    <h2>My Club</h2>
+                    <div id="clubPlayers" class="players-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="transferModal" class="modal">
+            <div class="modal-content transfer-content">
+                <span class="close-btn" onclick="closeModal('transferModal')">&times;</span>
+                <div class="transfer-container">
+                    <h2>Transfer Market</h2>
+                    <div id="transferPlayers" class="players-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="botMatchModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal('botMatchModal')">&times;</span>
+                <div class="bot-match-container">
+                    <h2>Bot Match</h2>
+                    <div class="match-area">
+                        <div class="goal"></div>
+                        <div class="ball" id="ball"></div>
+                        <div class="goalkeeper" id="goalkeeper"></div>
+                    </div>
+                    <div class="power-meter">
+                        <div class="power-bar" id="powerBar"></div>
+                    </div>
+                    <button onclick="shoot()" class="shoot-btn">Shoot!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
