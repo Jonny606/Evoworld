@@ -160,7 +160,7 @@ function startTournamentMatch() {
     closeModal('tournamentModal');
 }
 // Pack Opening
-function openPack(type) {
+window.openPack = function (type) {
     const packCosts = {
         bronze: 100,
         silver: 250,
