@@ -159,7 +159,6 @@ function startTournamentMatch() {
     showBotMatch();
     closeModal('tournamentModal');
 }
-// Pack Opening
 window.openPack = function (type) {
     const packCosts = {
         bronze: 100,
@@ -179,7 +178,6 @@ window.openPack = function (type) {
     const probs = packProbabilities[type];
     let rating;
 
-    // Use cumulative probabilities to determine the rating
     if (rand < probs[99]) {
         rating = 99;
     } else if (rand < probs[99] + probs[90]) {
@@ -189,6 +187,13 @@ window.openPack = function (type) {
     } else {
         rating = 80;
     }
+
+    const availablePlayers = players.filter(p => p.rating === rating);
+    const player = availablePlayers[Math.floor(Math.random() * availablePlayers.length)];
+
+    showPlayer(player);
+    playPackOpenSound();
+};
 
     const availablePlayers = players.filter(p => p.rating === rating); // Ensure exact match for rating
     const player = availablePlayers[Math.floor(Math.random() * availablePlayers.length)];
