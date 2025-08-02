@@ -241,7 +241,6 @@ function startTournamentMatch() {
     showBotMatch();
     closeModal('tournamentModal');
 }
-
 // Pack Opening
 function openPack(type) {
     const packCosts = {
@@ -262,18 +261,23 @@ function openPack(type) {
     const probs = packProbabilities[type];
     let rating;
 
-    if (rand < probs[99]) rating = 99;
-    else if (rand < probs[99] + probs[90]) rating = 90;
-    else if (rand < probs[99] + probs[90] + probs[85]) rating = 85;
-    else rating = 80;
+    // Use cumulative probabilities to determine the rating
+    if (rand < probs[99]) {
+        rating = 99;
+    } else if (rand < probs[99] + probs[90]) {
+        rating = 90;
+    } else if (rand < probs[99] + probs[90] + probs[85]) {
+        rating = 85;
+    } else {
+        rating = 80;
+    }
 
-    const availablePlayers = players.filter(p => p.rating >= rating);
+    const availablePlayers = players.filter(p => p.rating === rating); // Ensure exact match for rating
     const player = availablePlayers[Math.floor(Math.random() * availablePlayers.length)];
-    
+
     showPlayer(player);
     playPackOpenSound();
 }
-
 function showPlayer(player) {
     const modal = document.getElementById('playerModal');
     const playerInfo = document.getElementById('playerInfo');
